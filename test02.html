@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <title>AR自動表示 (iPhone / Vision Pro)</title>
+  <style>
+    html, body {
+      margin: 0;
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: #f0f0f0;
+      font-family: sans-serif;
+      text-align: center;
+    }
+    #message {
+      font-size: 1.2em;
+      color: #333;
+    }
+    #ar-link {
+      display: inline-block;
+      padding: 12px 20px;
+      margin-top: 15px;
+      background-color: #007aff;
+      color: white;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+
+<div id="message">
+  ARを起動中…<br>
+  開かれない場合は下のボタンをタップしてください。<br>
+  <a id="ar-link" href="3dbeni.usdz" rel="ar">ARで表示</a>
+</div>
+
+<script>
+  const ua = navigator.userAgent;
+  const isiOS = /iPad|iPhone|iPod/.test(ua);
+  const isVisionPro = /Vision/i.test(ua);
+  const arLink = document.getElementById("ar-link");
+
+  // iOS / Vision Pro の場合だけ実行
+  if (isiOS || isVisionPro) {
+    // ページが完全に読み込まれたあと、短時間で自動起動を試みる
+    window.addEventListener("load", () => {
+      setTimeout(() => {
+        try {
+          arLink.click(); // 一部デバイスでは無効になる
+        } catch (e) {
+          console.warn("自動起動失敗:", e);
+        }
+      }, 500);
+    });
+  } else {
+    document.getElementById("message").innerHTML =
+      "このページは iPhone または Apple Vision Pro でご覧ください。";
+    arLink.style.display = "none";
+  }
+</script>
+
+</body>
+</html>
